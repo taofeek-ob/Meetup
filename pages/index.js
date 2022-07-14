@@ -1,5 +1,5 @@
 import MeetupList from "../components/meetups/MeetupList";
-import Head from "next/head";
+
 import { MongoClient } from "mongodb";
 import { Fragment } from "react";
 import Meta from "../components/meta";
@@ -65,13 +65,11 @@ const HomePage = (props) => {
 //   };
 // }
 
-export const getStaticProps = async (ctx) => {
-  const client = await MongoClient.connect(
-    process.env.MONGO_DB
-  );
+export const getStaticProps = async () => {
+  const client = await MongoClient.connect(process.env.MONGO_DB);
   const db = client.db();
 
-  const meetupsCollection = db.collection("meetups");
+  const meetupsCollection = await db.collection("meetups");
 
   const meetup = await meetupsCollection.find().toArray();
 
